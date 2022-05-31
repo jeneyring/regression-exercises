@@ -30,10 +30,6 @@ def wrangle_zillow(df):
     df['yearbuilt'] = df['yearbuilt'].astype('int')
     df['calculatedfinishedsquarefeet'] = df['calculatedfinishedsquarefeet'].astype('int')
 
-    #Converting taxvaluedollarcnt  and taxamount into currency
-    df["taxvaluedollarcnt"] = df["taxvaluedollarcnt"].apply(lambda x: format_currency(x, currency="USD", locale="en_US"))
-    df["taxamount"] = df["taxamount"].apply(lambda x: format_currency(x, currency="USD", locale="en_US"))
-
     #Renamed columns for easier reading
     df = df.rename(columns={"bedroomcnt": "Bedroom_Count", "bathroomcnt": "Bathroom_count", "calculatedfinishedsquarefeet": "square_feet", "taxvaluedollarcnt": "Tax_Value", "taxamount": "Tax_amount", "fips": "Fips_code"})
 
