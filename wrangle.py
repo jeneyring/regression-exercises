@@ -1,6 +1,8 @@
 import pandas as pd
 import os
 from env import get_db_url
+import numpy as np
+from sklearn.model_selection import train_test_split
 
 """
 USAGE: 
@@ -38,13 +40,13 @@ def handle_nulls(df):
 
 def optimize_types(df):
     # Convert some columns to integers
-    # fips, yearbuilt, and bedrooms can be integers
-    df["fips"] = df["fips"].astype(int)
+    # yearbuilt, and bedrooms can be integers
     df["yearbuilt"] = df["yearbuilt"].astype(int)
     df["bedroomcnt"] = df["bedroomcnt"].astype(int)    
     df["taxvaluedollarcnt"] = df["taxvaluedollarcnt"].astype(int)
     df["calculatedfinishedsquarefeet"] = df["calculatedfinishedsquarefeet"].astype(int)
     return df
+
 
 
 def handle_outliers(df):
@@ -56,6 +58,7 @@ def handle_outliers(df):
     df = df[df.taxvaluedollarcnt < 2_000_000]
 
     return df
+
 
 def wrangle_zillow():
     """
@@ -76,3 +79,23 @@ def wrangle_zillow():
     df.to_csv("zillow.csv", index=False)
 
     return df
+
+
+"""
+Splitting the data into train, validate, test.
+Use by calling in 'from wrangle import zillow_split'
+"""
+df = wrangle_zillow()
+
+def split_data(df):
+    '''
+    take in a DataFrame and return train, validate, and test DataFrames; stratify on taxvaluedollarcnt.
+    return train, validate, test DataFrames.
+    '''
+    train_validate, test = train_test_split(df, test_size=.2, random_state=123)
+    train, validate = train_test_split(train_validate, 
+                                       test_size=.3, 
+                                       random_state=123)
+    return train, validate, test
+
+train, validate, test = split_data(df)
