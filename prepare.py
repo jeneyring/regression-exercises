@@ -3,6 +3,22 @@ from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 
 
+"""
+A function to split the data in to train, validate, test
+"""
+
+def split_data(df):
+    '''
+    take in a DataFrame and return train, validate, and test DataFrames; stratify on taxvaluedollarcnt.
+    return train, validate, test DataFrames.
+    '''
+
+    train_validate, test = train_test_split(df, test_size=.2, random_state=123)
+    train, validate = train_test_split(train_validate, 
+                                       test_size=.3, 
+                                       random_state=123)
+    return train, validate, test
+
 '''
 A function for using MinMaxScaler on the zillow dataset.
 Call in 
