@@ -19,7 +19,6 @@ def plot_variable_pairs(train):
     for col in columns:
         sns.lmplot(x= col, y="taxvaluedollarcnt", data=train.sample(1000), col = 'county', hue = 'county', line_kws={'color': 'red'})
         
-    plot_variable_pairs(train)
 
 #____________________________________________________
 
@@ -37,5 +36,3 @@ def plot_categorical_and_continuous_vars(train):
         sns.barplot(x= x, y="taxvaluedollarcnt", data=train.sample(1000), hue = 'county', ax = axes[0,1])
         sns.violinplot(x= x, y="taxvaluedollarcnt", data=train.sample(1000), hue = 'county', ax = axes[1,0])
         sns.scatterplot(x= x, y="taxvaluedollarcnt", data=train.sample(1000), hue = 'county', ax = axes[1,1])
-
-    plot_categorical_and_continuous_vars(train)
