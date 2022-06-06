@@ -1,6 +1,10 @@
 import pandas as pd
 import os
 from env import get_db_url
+import matplotlib as plt
+import seaborn as sns
+import numpy as np
+
 
 """
 USAGE: 
@@ -35,6 +39,11 @@ def handle_nulls(df):
     df = df.dropna()
     return df
 
+def drop_columns(df):
+    #dropping taxamount as it will interfere with predicting future property values
+    df = df.drop(columns=['taxamount'])
+    return df
+
 
 def optimize_types(df):
     # Convert some columns to integers
@@ -59,6 +68,23 @@ def handle_outliers(df):
 
     return df
 
+#using a function to set the Fips codes into their different counties.
+def clearing_fips(df):
+    '''This function takes in a DataFrame of unprepared Zillow information and generates a new
+    'county' column, with the county name based on the FIPS code. 
+    '''
+    # create a list of our conditions
+    fips = [
+        (df['fips'] == 6037),
+        (df['fips'] == 6059),
+        (df['fips'] == 6111)
+        ]
+    # create a list of the values we want to assign for each condition
+    counties = ['Los Angeles County', 'Orange County', 'Ventura County']
+    # create a new column and use np.select to assign values to it using our lists as arguments
+    df['county'] = np.select(fips, counties)
+    return df
+
 
 def wrangle_zillow():
     """
@@ -72,9 +98,13 @@ def wrangle_zillow():
 
     df = handle_nulls(df)
 
+    df = drop_columns(df)
+
     df = optimize_types(df)
 
     df = handle_outliers(df)
+
+    df = clearing_fips(df)
 
     df.to_csv("zillow.csv", index=False)
 

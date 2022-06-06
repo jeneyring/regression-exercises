@@ -1,8 +1,10 @@
 import pandas as pd
+import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.model_selection import train_test_split
 
 
+   
 """
 A function to split the data in to train, validate, test
 """
@@ -12,6 +14,7 @@ def split_data(df):
     take in a DataFrame and return train, validate, and test DataFrames; stratify on taxvaluedollarcnt.
     return train, validate, test DataFrames.
     '''
+
 
     train_validate, test = train_test_split(df, test_size=.2, random_state=123)
     train, validate = train_test_split(train_validate, 
@@ -26,7 +29,7 @@ Call in
 def scale_data(train,
               validate,
               test,
-              columns_to_scale=['bedroomcnt', 'bathroomcnt', 'taxvaluedollarcnt', 'calculatedfinishedsquarefeet'],
+              columns_to_scale=['bedroomcnt', 'bathroomcnt', 'taxvaluedollarcnt', 'calculatedfinishedsquarefeet','county'],
               return_scaler=False):
     """
     Scales the 3 data splits.
